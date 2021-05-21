@@ -5,6 +5,7 @@ import (
 	"FS01/database"
 	"FS01/models"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -74,8 +75,32 @@ func Login(c *gin.Context) {
 	// 	Token: signedToken,
 	// }
 	// name(string), value(string), maxAge(int), path(string), domain(string), secure(bool), httpOnly(bool)
-	c.SetCookie("jwt", signedToken, 3600, "/", dom, false, true)
+
+	// c.SetCookie("jwt", signedToken, 3600, "/", dom, false, true)
+
+	http.SetCookie(c.Writer, &http.Cookie{
+		Name:     "jwt",       //Your cookie's name
+		Value:    signedToken, //cookie value
+		Path:     "/",
+		Domain:   dom,
+		MaxAge:   3600,
+		Secure:   true,
+		HttpOnly: true,
+		SameSite: 4, //The following is a detailed explanation
+	})
+
 	c.JSON(200, gin.H{
 		"msg": "logged in succesfully, ok to redirect",
 	})
 }
+
+// newCookie := &http.Cookie{
+// 	Name:     MatchCookieName,
+// 	Domain:   GetRootDomain(r),
+// 	MaxAge:   CookieMaxAge,
+// 	Expires:  time.Now().Add(CookieMaxAge),
+// 	Value:    matchCookieAfter.EncodeToBase64(),
+// 	SameSite: http.SameSiteNoneMode,
+// 	Secure:   true,
+// 	Path:     "/",
+// }

@@ -39,7 +39,7 @@ func SetupServer() *gin.Engine {
 			protected.GET("/user/post/:id", controller.GetPostForUser)
 			protected.DELETE("/user/post/:id", controller.DeletePost)
 			protected.POST("/logout", func(c *gin.Context) {
-				c.SetCookie("jwt", "", -1, "/", "localhost", false, true)
+				c.SetCookie("jwt", "", -1, "/", "https://tpgs.herokuapp.com/", false, true)
 			})
 		}
 	}
