@@ -12,7 +12,8 @@ func SetupServer() *gin.Engine {
 	s := gin.New()
 
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"http://localhost:4200", "*"}
+	config.AllowOrigins = []string{"http://localhost:4200"}
+	config.AllowCredentials = true
 
 	s.Use(gin.Recovery(), middleware.Logger(), cors.New(config))
 
