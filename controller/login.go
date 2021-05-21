@@ -79,14 +79,14 @@ func Login(c *gin.Context) {
 	// c.SetCookie("jwt", signedToken, 3600, "/", dom, false, true)
 
 	http.SetCookie(c.Writer, &http.Cookie{
-		Name:     "jwt",       //Your cookie's name
-		Value:    signedToken, //cookie value
+		Name:     "jwt",
+		Value:    signedToken,
 		Path:     "/",
 		Domain:   dom,
 		MaxAge:   3600,
-		Secure:   true,
+		Secure:   false,
 		HttpOnly: true,
-		SameSite: 4, //The following is a detailed explanation
+		SameSite: 4,
 	})
 
 	c.JSON(200, gin.H{
