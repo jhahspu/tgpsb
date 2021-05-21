@@ -11,7 +11,10 @@ import (
 func SetupServer() *gin.Engine {
 	s := gin.New()
 
-	s.Use(gin.Recovery(), middleware.Logger(), cors.Default())
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://localhost:4200", "*"}
+
+	s.Use(gin.Recovery(), middleware.Logger(), cors.New(config))
 
 	s.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong")
