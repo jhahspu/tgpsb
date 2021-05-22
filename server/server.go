@@ -32,7 +32,7 @@ func SetupServer() *gin.Engine {
 			public.GET("/post/:id", controller.OnePost)
 		}
 
-		protected := api.Group("/protected").Use(middleware.CookieToken())
+		protected := api.Group("/protected").Use(middleware.AuthToken())
 		{
 			protected.GET("/user", controller.Profile)
 			protected.POST("/user/post", controller.CreatePost)
