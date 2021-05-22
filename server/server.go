@@ -13,7 +13,8 @@ func SetupServer() *gin.Engine {
 
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"http://localhost:4200"}
-	config.AllowCredentials = true
+	config.AllowMethods = []string{"Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE"}
+	config.AllowHeaders = []string{"Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"}
 
 	s.Use(gin.Recovery(), middleware.Logger(), cors.New(config))
 
