@@ -36,6 +36,7 @@ func SetupServer() *gin.Engine {
 		protected := api.Group("/protected").Use(middleware.AuthToken())
 		{
 			protected.GET("/user", controller.Profile)
+			protected.GET("/user/posts", controller.GetPostsForUser)
 			protected.POST("/user/post", controller.CreatePost)
 			protected.GET("/user/post/:id", controller.GetPostForUser)
 			protected.DELETE("/user/post/:id", controller.DeletePost)

@@ -53,6 +53,37 @@ func CreatePost(c *gin.Context) {
 }
 
 // GetPostForUser
+func GetPostsForUser(c *gin.Context) {
+	var user models.User
+
+	// 01: check user
+	email, _ := c.Get("email")
+	if err := database.DBClient.Get(&user, "SELECT id, name, email FROM users WHERE email=$1", email); err != nil {
+		log.Println(err)
+		c.JSON(400, gin.H{
+			"msg": "error getting user in db",
+		})
+		c.Abort()
+		return
+	}
+
+	var posts []models.Post
+	// 02: get post by post_id and user_id
+	// protected route
+	// select * from posts where (id = 'd269e6b7-110a-45fa-b68f-48472a4acb7a' and user_id = '389e964d-ecfa-4883-a9e7-0da11db5f34c');
+	if err := database.DBClient.Select(&posts, "SELECT id, title, intro, stack, content, user_name, updated_at FROM posts WHERE user_id = $2", &user.ID); err != nil {
+		log.Println(err)
+		c.JSON(500, gin.H{
+			"msg": "error finding post for user",
+		})
+		c.Abort()
+		return
+	}
+
+	c.JSON(200, posts)
+}
+
+// GetPostForUser
 func GetPostForUser(c *gin.Context) {
 	var user models.User
 	id := c.Param("id") // post id
