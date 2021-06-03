@@ -50,9 +50,8 @@ a {
 pre[class*="language-"],
 code[class*="language-"] {
   background: $gray-800;
-  overflow: auto;
   white-space: pre-wrap;
-  word-wrap: break-word;
+  word-break: break-all;
 }
 
 hr {
