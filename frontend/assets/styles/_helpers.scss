@@ -1,0 +1,15 @@
+.spacing > * + * {
+  margin-top: 1.25rem;
+}
+.spacing-min > * + * {
+  margin-top: .5rem;
+}
+
+.text-muted {
+  color: $gray-500;
+}
+
+.info {
+  background: $blue;
+  color: $gray-100;
+}

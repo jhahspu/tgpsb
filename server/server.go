@@ -5,6 +5,7 @@ import (
 	"FS01/middleware"
 
 	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,11 +13,17 @@ func SetupServer() *gin.Engine {
 	s := gin.New()
 
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"http://localhost:4200"}
+	config.AllowOrigins = []string{"http://localhost:4200", "*"}
 	config.AllowMethods = []string{"Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE"}
 	config.AllowHeaders = []string{"Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"}
 
 	s.Use(gin.Recovery(), middleware.Logger(), cors.New(config))
+
+	s.Use(static.Serve("/", static.LocalFile("./frontend", true)))
+
+	s.NoRoute(func(c *gin.Context) {
+		c.File("./frontend/index.html")
+	})
 
 	s.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong")

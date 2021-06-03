@@ -1,0 +1,37 @@
+@import 'prismjs/themes/prism-okaidia.css';
+@import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
+@import 'prismjs/plugins/line-highlight/prism-line-highlight.css';
+
+@import './variables';
+@import './reset';
+@import './helpers';
+
+@import './layout';
+
+@import './button';
+@import './card';
+@import './form';
+@import './table';
+@import './loader';
+
+
+
+.view-post {
+  .head {
+    margin-bottom: 2.5rem;
+
+    div {
+      padding: 1rem;
+      text-align: right;
+      span {
+        font-size: 1.2rem;
+        &:not(:last-of-type)::after {
+          content: ' | ';
+        }
+      }
+    }
+  }
+}
+
+
+

@@ -10,6 +10,7 @@ github.com/gin-contrib/sse
 ## explicit
 # github.com/gin-gonic/contrib v0.0.0-20201101042839-6a891bf89f19
 ## explicit
+github.com/gin-gonic/contrib/static
 # github.com/gin-gonic/gin v1.7.1
 ## explicit
 github.com/gin-gonic/gin

@@ -1,0 +1,44 @@
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+
+  .card {
+    position: relative;
+    padding: 1rem;
+    background: linear-gradient(45deg, white 0%, $gray-000 50%, white 100%);
+    border: $border;
+    border-radius: 3px;
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.07);
+
+    div:not(:last-of-type) {
+      margin-bottom: 1rem;
+    }
+
+    div:last-of-type {
+      text-align: right;
+    }
+
+    &:first-of-type {
+      grid-column: span 2;
+      background: $gray-800;
+      color: $gray-100;
+
+      div:last-of-type {
+        text-align: left;
+
+        a {
+          color: $gray-100;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 748px) {
+    grid-template-columns: 1fr;
+
+    .card:first-of-type {
+      grid-column: span 1;
+    }
+  }
+}

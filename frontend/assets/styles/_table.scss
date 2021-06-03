@@ -1,0 +1,14 @@
+table {
+  width: 100%;
+  margin: 1.5rem 0;
+  border-collapse: collapse;
+
+  th, td {
+    border: $border;
+    padding: .125rem;
+  }
+
+  tr:nth-child(2n) {
+    background: $gray-100;
+  }
+}
