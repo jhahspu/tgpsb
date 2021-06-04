@@ -9,7 +9,7 @@
     background: linear-gradient(45deg, white 0%, $gray-000 50%, white 100%);
     border: $border;
     border-radius: 3px;
-    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.07);
+    box-shadow: $shadow;
 
     div:not(:last-of-type) {
       margin-bottom: 1rem;
