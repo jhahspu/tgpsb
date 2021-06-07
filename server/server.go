@@ -34,22 +34,20 @@ func SetupServer() *gin.Engine {
 		public := api.Group("/public")
 		{
 			public.POST("/signup", controller.SignUp)
-			public.POST("/login", controller.Login)
+			public.POST("/sign-in", controller.Login)
 			public.GET("/posts/front", controller.PostsFront)
 			public.GET("/posts/:stack", controller.PostsByStack)
 			public.GET("/post/:id", controller.OnePost)
 		}
 
-		protected := api.Group("/protected").Use(middleware.AuthToken())
+		protected := api.Group("/protected").Use(middleware.CookieToken())
 		{
 			protected.GET("/user", controller.Profile)
 			protected.GET("/user/posts", controller.GetPostsForUser)
 			protected.POST("/user/post", controller.CreatePost)
 			protected.GET("/user/post/:id", controller.GetPostForUser)
 			protected.DELETE("/user/post/:id", controller.DeletePost)
-			protected.POST("/logout", func(c *gin.Context) {
-				c.SetCookie("jwt", "", -1, "/", "https://tpgs.herokuapp.com/", false, true)
-			})
+			protected.GET("/sign-out", controller.SignOut)
 		}
 	}
 

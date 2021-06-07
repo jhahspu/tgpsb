@@ -5,6 +5,7 @@ import (
 	"FS01/database"
 	"FS01/models"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -53,7 +54,7 @@ func Login(c *gin.Context) {
 	godotenv.Load(".env")
 	key := os.Getenv("KEY")
 	iss := os.Getenv("ISS")
-	// dom := os.Getenv("DOM")
+	dom := os.Getenv("DOM")
 	jwtWrapper := auth.JwtWrapper{
 		SecretKey:       key,
 		Issuer:          iss,
@@ -70,23 +71,28 @@ func Login(c *gin.Context) {
 	}
 	// in case I want to return the token as a message response
 	// otherwise is set in httpOnly cookie
-	tokenResponse := LoginResponse{
-		Token: signedToken,
-	}
+	// tokenResponse := LoginResponse{
+	// 	Token: signedToken,
+	// }
 	// name(string), value(string), maxAge(int), path(string), domain(string), secure(bool), httpOnly(bool)
 
-	// c.SetCookie("jwt", signedToken, 3600, "/", dom, false, true)
+	// c.SetCookie("jwt", signedToken, 1, "/", dom, false, true)
 
-	// http.SetCookie(c.Writer, &http.Cookie{
-	// 	Name:     "jwt",
-	// 	Value:    signedToken,
-	// 	Path:     "/",
-	// 	Domain:   dom,
-	// 	MaxAge:   3600,
-	// 	Secure:   false,
-	// 	HttpOnly: true,
-	// 	SameSite: 4,
-	// })
+	http.SetCookie(c.Writer, &http.Cookie{
+		Name:     "jwt",
+		Value:    signedToken,
+		Path:     "/",
+		Domain:   dom,
+		MaxAge:   1800,
+		Secure:   false,
+		HttpOnly: true,
+		SameSite: 3,
+	})
 
-	c.JSON(200, tokenResponse)
+	// c.JSON(200, tokenResponse)
+	user.Password = ""
+
+	c.JSON(200, gin.H{
+		"msg": "Sign in successful",
+	})
 }

@@ -1,0 +1,34 @@
+tpgsf-footer {
+  grid-column: 2/3;
+
+  footer {
+    padding: .75rem 0 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-top: $border;
+
+    .links {
+      display: flex;
+      justify-content: center;
+
+      &.footer {
+        flex-direction: column;
+      }
+
+      .link {
+        padding: .25rem;
+        text-decoration: none;
+      }
+    }
+
+    a {
+      font-size: .9rem;
+    }
+
+    h4 a {
+      font-size: 1.2rem;
+      font-weight: 400;
+    }
+  }
+}
