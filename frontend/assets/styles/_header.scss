@@ -55,7 +55,7 @@ tpgsf-header {
           .dropdown-item {
 
             a {
-              text-transform: uppercase;
+              text-transform: capitalize;
               user-select: none;
             }
           }

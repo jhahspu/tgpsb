@@ -54,6 +54,10 @@
       background: $angular;
     }
 
+    &.gfs::before {
+      background: $firebase;
+    }
+
     &.go::before {
       background: $go;
     }
