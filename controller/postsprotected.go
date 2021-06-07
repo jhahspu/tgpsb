@@ -8,6 +8,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const getDBUserQuery = `
+SELECT id, name, email
+FROM users
+WHERE email=$1
+`
+
+const createPostQuery = `
+INSERT INTO posts (id, title, intro, stack, content, user_id, user_name)
+VALUES (uuid_generate_v4(), $1, $2, $3, $4, $5, $6)
+`
+
 // CreatePost - create on post
 func CreatePost(c *gin.Context) {
 	var user models.User
@@ -26,7 +37,7 @@ func CreatePost(c *gin.Context) {
 	// since it's a protected route and user data is set
 	// I can get the user data from gin context
 	email, _ := c.Get("email")
-	if err := database.DBClient.Get(&user, "SELECT id, name, email FROM users WHERE email=$1", email); err != nil {
+	if err := database.DBClient.Get(&user, getDBUserQuery, email); err != nil {
 		log.Println(err)
 		c.JSON(400, gin.H{
 			"msg": "error getting user in db",
@@ -37,7 +48,7 @@ func CreatePost(c *gin.Context) {
 
 	// 03: insert data
 	// INSERT INTO posts (id, title, intro, stack, content, user_id, user_name) VALUES (uuid_generate_v4(), 'post1', 'some short description', 'stack', '# post title', 'user_id', 'user_name');
-	_, err := database.DBClient.Exec("INSERT INTO posts (id, title, intro, stack, content, user_id, user_name) VALUES (uuid_generate_v4(), $1, $2, $3, $4, $5, $6);", &payload.Title, &payload.Intro, &payload.Stack, &payload.Content, &user.ID, &user.Name)
+	_, err := database.DBClient.Exec(createPostQuery, &payload.Title, &payload.Intro, &payload.Stack, &payload.Content, &user.ID, &user.Name)
 	if err != nil {
 		log.Println(err)
 		c.JSON(500, gin.H{
@@ -52,13 +63,20 @@ func CreatePost(c *gin.Context) {
 	})
 }
 
+const getUserPostsQuery = `
+SELECT id, title, intro, stack, content, user_name, updated_at
+FROM posts
+WHERE user_id = $1
+ORDER BY updated_at DESC
+`
+
 // GetPostForUser
 func GetPostsForUser(c *gin.Context) {
 	var user models.User
 
 	// 01: check user
 	email, _ := c.Get("email")
-	if err := database.DBClient.Get(&user, "SELECT id, name, email FROM users WHERE email=$1", email); err != nil {
+	if err := database.DBClient.Get(&user, getDBUserQuery, email); err != nil {
 		log.Println(err)
 		c.JSON(400, gin.H{
 			"msg": "error getting user in db",
@@ -71,7 +89,7 @@ func GetPostsForUser(c *gin.Context) {
 	// 02: get post by post_id and user_id
 	// protected route
 	// select * from posts where (id = 'd269e6b7-110a-45fa-b68f-48472a4acb7a' and user_id = '389e964d-ecfa-4883-a9e7-0da11db5f34c');
-	if err := database.DBClient.Select(&posts, "SELECT id, title, intro, stack, content, user_name, updated_at FROM posts WHERE user_id = $1 ORDER BY updated_at DESC", &user.ID); err != nil {
+	if err := database.DBClient.Select(&posts, getUserPostsQuery, &user.ID); err != nil {
 		log.Println(err)
 		c.JSON(500, gin.H{
 			"msg": "error finding posts for user",
@@ -83,6 +101,12 @@ func GetPostsForUser(c *gin.Context) {
 	c.JSON(200, posts)
 }
 
+const getPostForUserQuery = `
+SELECT id, title, intro, stack, content, user_name, updated_at
+FROM posts
+WHERE (id = $1 AND user_id = $2)
+`
+
 // GetPostForUser
 func GetPostForUser(c *gin.Context) {
 	var user models.User
@@ -90,7 +114,7 @@ func GetPostForUser(c *gin.Context) {
 
 	// 01: check user
 	email, _ := c.Get("email")
-	if err := database.DBClient.Get(&user, "SELECT id, name, email FROM users WHERE email=$1", email); err != nil {
+	if err := database.DBClient.Get(&user, getDBUserQuery, email); err != nil {
 		log.Println(err)
 		c.JSON(400, gin.H{
 			"msg": "error getting user in db",
@@ -103,7 +127,7 @@ func GetPostForUser(c *gin.Context) {
 	// 02: get post by post_id and user_id
 	// protected route
 	// select * from posts where (id = 'd269e6b7-110a-45fa-b68f-48472a4acb7a' and user_id = '389e964d-ecfa-4883-a9e7-0da11db5f34c');
-	if err := database.DBClient.Get(&post, "SELECT id, title, intro, stack, content, user_name, updated_at FROM posts WHERE (id = $1 AND user_id = $2)", id, &user.ID); err != nil {
+	if err := database.DBClient.Get(&post, getPostForUserQuery, id, &user.ID); err != nil {
 		log.Println(err)
 		c.JSON(500, gin.H{
 			"msg": "error finding post for user",
@@ -115,6 +139,12 @@ func GetPostForUser(c *gin.Context) {
 	c.JSON(200, post)
 }
 
+const deletePostQuery = `
+DELETE FROM posts
+WHERE id = $1
+AND user_id = $2
+`
+
 // DeletePost
 func DeletePost(c *gin.Context) {
 	var user models.User
@@ -122,7 +152,7 @@ func DeletePost(c *gin.Context) {
 
 	// 01: check user
 	email, _ := c.Get("email")
-	if err := database.DBClient.Get(&user, "SELECT id, name, email FROM users WHERE email=$1", email); err != nil {
+	if err := database.DBClient.Get(&user, getDBUserQuery, email); err != nil {
 		log.Println(err)
 		c.JSON(400, gin.H{
 			"msg": "error getting user in db",
@@ -133,7 +163,7 @@ func DeletePost(c *gin.Context) {
 
 	// 02: delete post by post_id and user_id
 	// protected route
-	_, err := database.DBClient.Exec("DELETE FROM posts WHERE id = $1 AND user_id = $2;", id, &user.ID)
+	_, err := database.DBClient.Exec(deletePostQuery, id, &user.ID)
 	if err != nil {
 		log.Println(err)
 		c.JSON(500, gin.H{

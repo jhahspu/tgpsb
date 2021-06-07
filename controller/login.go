@@ -23,6 +23,12 @@ type LoginResponse struct {
 	Token string `json:"token"`
 }
 
+const loginQuery = `
+SELECT id, name, email, password, created_at, last_login
+FROM users
+WHERE email=$1
+`
+
 // Login
 func Login(c *gin.Context) {
 	var payload LoginPayload
@@ -35,7 +41,7 @@ func Login(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	if err := database.DBClient.Get(&user, "SELECT id, name, email, password, created_at, last_login FROM users WHERE email=$1", payload.Email); err != nil {
+	if err := database.DBClient.Get(&user, loginQuery, payload.Email); err != nil {
 		log.Println(err)
 		c.JSON(400, gin.H{
 			"msg": "error getting user in db",

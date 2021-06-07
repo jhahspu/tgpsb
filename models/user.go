@@ -15,9 +15,14 @@ type User struct {
 	LastLogin string `json:"last_login" db:"last_login"`
 }
 
+const createUserQuery = `
+INSERT INTO users (ID, Name, Email, Password)
+VALUES (uuid_generate_v4(), $1, $2, $3)
+`
+
 // Create will create user in the db
 func (u *User) CreateUser() error {
-	_, err := database.DBClient.Exec("INSERT INTO users (ID, Name, Email, Password) VALUES (uuid_generate_v4(), $1, $2, $3);", u.Name, u.Email, u.Password)
+	_, err := database.DBClient.Exec(createUserQuery, u.Name, u.Email, u.Password)
 	if err != nil {
 		return err
 	}
