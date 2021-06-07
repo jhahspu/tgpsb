@@ -19,6 +19,56 @@ $green:   hsla(152, 72.75%, 43.76%, 1);
 $teal:    hsla(162, 72.75%, 43.76%, 1);
 $cyan:    hsla(190, 72.75%, 43.76%, 1);
 
+$hslA: .44;
+
+$angular: #dd0031;
+$angular: #c3002f;
+$angular: hsla(345.5, 100%, 38.2%, $hslA);
+
+$docker: #099cec;
+$docker: hsla(195.4,100%,40.4%, $hslA);
+
+$firebase: #ff8a65;
+$firebase: hsla(14.4, 100%, 69.8%, $hslA);
+
+$gatsby: #5468ff;
+$gatsby: hsla(233, 100%, 66.5%, $hslA);
+
+$go: #7fd5ea;
+$go: hsla(191.8, 71.8%, 70.8%, $hslA);
+
+$lodash: #284487;
+$lodash: hsla(222.3, 54.3%, 34.3%, $hslA);
+
+$php: #4f5b93;
+$php: #8892bf;
+$php: hsla(229.4, 30.1%, 44.3%, $hslA);
+
+// powershell
+$psh: #0273b7;
+$psh: hsla(202.5, 97.8%, 36.3%, $hslA);
+
+// postgresql
+$psql: #31648c;
+$psql: hsla(206, 48%, 37%, $hslA);
+
+$python: #3776ab;
+$python: hsla(207.4, 51.3%, 44.3%, $hslA);
+
+$rxjs: #d81b60;
+$rxjs: hsla(338.1, 77.8%, 47.6%, $hslA);
+
+$sass: #bf4080;
+$sass: hsla(329.8, 49.8%, 50%, $hslA);
+
+// typescript
+$ts: #3178c6;
+$ts: hsla(211.4, 60.3%, 48.4%, $hslA);
+
+// vanillajs
+$vjs: #f7e018;
+$vjs: hsla(53.8, 93.3%, 53.1%, $hslA);
+
 $border: 1px solid $gray-200;
 $bg-card: hsla(240, 67.7%, 98.5%, 1);
 

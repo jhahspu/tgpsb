@@ -6,7 +6,7 @@
   .card {
     position: relative;
     padding: 1rem;
-    background: linear-gradient(45deg, white 0%, $gray-000 50%, white 100%);
+    background: rgba(255, 255, 255, .7);
     border: $border;
     border-radius: 3px;
     box-shadow: $shadow;
@@ -32,6 +32,35 @@
         }
       }
     }
+
+    &::before {
+      position: absolute;
+      content: '';
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      clip-path: inset(8% 74% 76% 2%);
+      transition: clip-path .5s cubic-bezier(0.075, 0.82, 0.165, 1);
+      z-index: -1;
+    }
+
+    &:hover::before {
+      clip-path: inset(74% 2% 5% 70%);
+      // animation: card .6s forwards;
+    }
+
+    &.angular::before {
+      background: $angular;
+    }
+
+    &.go::before {
+      background: $go;
+    }
+
+    &.psql::before {
+      background: $psql;
+    }
   }
 
   @media (max-width: 768px) {
@@ -41,4 +70,10 @@
       grid-column: span 1;
     }
   }
+}
+
+@keyframes card {
+  0% { clip-path: inset(8% 74% 76% 2%); }
+  40% { clip-path: inset(6% 1% 5% 2%); }
+  100% { clip-path: inset(74% 2% 5% 70%); }
 }
